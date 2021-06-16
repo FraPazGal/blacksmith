@@ -2,6 +2,10 @@ name: Test - PR
 
 on: pull_request
 
+env:
+  previous_tag: ''
+  new_tag: ''
+
 jobs:
   build_test:
     runs-on: ubuntu-18.04

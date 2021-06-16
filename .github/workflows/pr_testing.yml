@@ -10,6 +10,10 @@ jobs:
   build_test:
     runs-on: ubuntu-18.04
 
+    outputs:
+      previous_tag: ${{ steps.previous_tag.outputs.previous_tag }}
+      new_tag: ${{ steps.new_tag.outputs.new_tag }}
+
     steps:
       - uses: actions/checkout@v2
         with:

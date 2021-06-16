@@ -24,9 +24,11 @@ jobs:
         id: s3ConfigPath
 
       - name: Previous tag
-        run: echo "previous_tag=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
+        run: echo "::set-output name=previous_tag::$(git describe --abbrev=0 --tags)"
+        id: previous_tag
       - name: New tag
-        run: echo "new_tag=v${{ steps.version.outputs.version }}" >> $GITHUB_ENV
+        run: echo "::set-output name=new_tag::$(echo v${{ steps.version.outputs.version }})"
+        id: new_tag
 
   tagging:
     runs-on: ubuntu-18.04
@@ -38,9 +40,9 @@ jobs:
           fetch-depth: 0
 
       - name: Echo tags
-        run: echo "${{ env.new_tag }} --- ${{ env.previous_tag }}"
+        run: echo "${{ needs.build_test.outputs.new_tag }} --- ${{ needs.build_test.outputs.previous_tag }}"
       - name: Tag release
-        if: env.new_tag > env.previous_tag
+        if: needs.build_test.outputs.new_tag > needs.build_test.outputs.previous_tag
         uses: mathieudutour/github-tag-action@v5.5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

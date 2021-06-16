@@ -2,10 +2,6 @@ name: Test - PR
 
 on: pull_request
 
-env:
-  PREVIOUS_TAG: ''
-  NEW_TAG: ''
-
 jobs:
   build_test:
     runs-on: ubuntu-18.04
@@ -22,14 +18,11 @@ jobs:
       - name: Define s3ConfigPath
         run: echo "::set-output name=s3ConfigPath::$(echo test/config/${{ steps.version.outputs.version }}-0/config.json)"
         id: s3ConfigPath
-      - name: Define artifactName
-        run: echo "::set-output name=artifactName::$(echo blacksmith-${{ steps.version.outputs.version }}-0-linux-x64.tar.gz)"
-        id: artifactName
 
       - name: Previous tag
-        run: git describe --abbrev=0 --tags >> $PREVIOUS_TAG
+        run: echo "previous_tag=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
       - name: New tag
-        run: echo "v${{ steps.version.outputs.version }}" >> $NEW_TAG
+        run: echo "new_tag=v${{ steps.version.outputs.version }}" >> $GITHUB_ENV
 
   tagging:
     runs-on: ubuntu-18.04
@@ -40,8 +33,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Echo tags
+        run: echo "${{ env.new_tag }} --- ${{ env.previous_tag }}"
       - name: Tag release
-        if: env.NEW_TAG > env.PREVIOUS_TAG
+        if: env.new_tag > env.previous_tag
         uses: mathieudutour/github-tag-action@v5.5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

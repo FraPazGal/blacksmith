@@ -127,7 +127,7 @@ jobs:
         run: |
           jq '.' metadata | \
           jq ".releases |= . + [\
-          $(echo "{\"version\": \"${{ needs.github_release.outputs.version }}\", \
+          $(echo "{\"version\": \"${{ steps.version.outputs.version }}\", \
           \"revision\": \"0\", \
           \"platform\": \"linux-x64\", \
           \"s3Url\": \"${{ steps.s3path.outputs.s3path }}\", \

@@ -62,12 +62,6 @@ jobs:
           tag_prefix: ''
           dry_run: true
 
-      - name: New release check
-        if: steps.new_tag.outputs.new_tag <= steps.previous_tag.outputs.previous_tag
-        run: |
-          echo "Version ${{ steps.version.outputs.version }} already released. Stopping release jobs"
-          exit 1
-
       - name: Generate changelog
         id: changelog
         uses: metcalfc/changelog-generator@v1.0.0

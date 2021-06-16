@@ -41,7 +41,7 @@ jobs:
           fetch-depth: 0
 
       - name: Tag release
-        if: $NEW_TAG > $PREVIOUS_TAG
+        if: env.NEW_TAG > env.PREVIOUS_TAG
         uses: mathieudutour/github-tag-action@v5.5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

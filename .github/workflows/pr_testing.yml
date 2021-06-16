@@ -34,7 +34,7 @@ jobs:
           tag_prefix: ''
 
       - name: Generate changelog
-        if: ! steps.new_tag.outputs.new_tag > steps.previous_tag.outputs.previous_tag
+        if: steps.new_tag.outputs.new_tag <= steps.previous_tag.outputs.previous_tag
         run: |
           echo "Version ${{ steps.version.outputs.version }} already released. Stopping release jobs"
           exit 1

@@ -27,7 +27,7 @@ jobs:
         id: artifactName
 
       - name: Previous tag
-        run: echo "git describe --abbrev=0 --tags" >> $PREVIOUS_TAG
+        run: git describe --abbrev=0 --tags >> $PREVIOUS_TAG
       - name: New tag
         run: echo "v${{ steps.version.outputs.version }}" >> $NEW_TAG
 

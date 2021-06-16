@@ -36,6 +36,8 @@ jobs:
         run: |
           echo "Version ${{ steps.version.outputs.version }} already released. Stopping release jobs"
           exit 1
+      - name: Test
+        run: echo "BYE"
 
   s3_release:
     runs-on: ubuntu-latest
